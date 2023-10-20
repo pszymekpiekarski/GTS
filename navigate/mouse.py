@@ -21,6 +21,13 @@ class Mouse():
 
     @classmethod
     def moveTo(cls, x=None, y=None, duration=None):
+        '''
+        przesuwa kursor myszy do podanej pozycji
+        :param x:
+        :param y:
+        :param duration:
+        :return:
+        '''
         if x is not None and y is not None:
             if duration:
                 pyautogui.moveTo(x, y, duration)
