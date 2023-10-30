@@ -56,36 +56,31 @@ class Element:
                         return False
                     time.sleep(1)
 
-
         @classmethod
-        def focus(cls, image_path, time_limit=None, position='center', region=None, offset=0):
-            """Czeka aż się pojawi obrazek, przesuwa kursor na wskazaną pozycję znalezionego obrazka bez opóźnienia"""
+        ef focus(cls, image_path, time_limit=None, x=None, y=None, region=None):d
+            """Czeka aż się pojawi obrazek, przesuwa kursor na środek znalezionego obrazka bez opóźnienia"""
+
             if time_limit is None or time_limit <= 0:
                 time_limit = float('inf')
             start_time = time.time()
 
             while True:
                 try:
-                    screenshot = pyautogui.screenshot()
                     if region:
                         position_found = pyautogui.locateOnScreen(image_path, region=region, confidence=0.9)
                     else:
                         position_found = pyautogui.locateOnScreen(image_path, confidence=0.9)
 
                     if position_found:
-                        center_x, center_y = pyautogui.center(position_found)
-                        x, y, width, height = position_found  # Extract coordinates
+                        x1, y1, width, height = position_found  # Extract coordinates
+                        if x is None and y is None:
+                            target_x = x1 + width // 2
+                            target_y = y1 + height // 2
+                        else:
+                            target_x = x1 + x
+                            target_y = y1 + y
 
-                        if position == 'center':
-                            pyautogui.moveTo(center_x, center_y)
-                        elif position == 'left':
-                            pyautogui.moveTo(x + offset, center_y)
-                        elif position == 'right':
-                            pyautogui.moveTo(x + width - offset, center_y)
-                        elif position == 'top':
-                            pyautogui.moveTo(center_x, y + offset)
-                        elif position == 'bottom':
-                            pyautogui.moveTo(center_x, y + height - offset)
+                        pyautogui.moveTo(target_x, target_y)
 
                         return round(time.time() - start_time, 2)
                     else:
@@ -93,7 +88,6 @@ class Element:
                             return False
                 except Exception as e:
                     print(e)
-
 
         @classmethod
         def moveTo(cls, image_path, time_limit=None, duration=2, position='center', region=None, offset=0):
