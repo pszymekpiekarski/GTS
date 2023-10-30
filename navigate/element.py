@@ -57,7 +57,7 @@ class Element:
                     time.sleep(1)
 
         @classmethod
-        ef focus(cls, image_path, time_limit=None, x=None, y=None, region=None):d
+        def focus(cls, image_path, time_limit=None, x=None, y=None, region=None):
             """Czeka aż się pojawi obrazek, przesuwa kursor na środek znalezionego obrazka bez opóźnienia"""
 
             if time_limit is None or time_limit <= 0:
